@@ -1,31 +1,372 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرفی نرم‌افزار من</title>
+    <title>IEC 60870-5-101 Gateway & Commissioning Suite</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #f8fafc; text-align: center; padding: 50px 20px; }
-        .box { max-width: 700px; margin: 0 auto; background: #1e293b; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        h1 { color: #38bdf8; }
-        p { line-height: 1.8; color: #cbd5e1; }
-        .btn { display: inline-block; padding: 12px 25px; margin: 10px; background: #0284c7; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
-        .btn:hover { background: #0369a1; }
-        .btn-green { background: #16a34a; }
-        .btn-green:hover { background: #15803d; }
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(56, 189, 248, 0.2);
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.4);
+            --accent: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 40%);
+        }
+
+        /* Header / Navbar */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-links { display: flex; gap: 30px; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        .btn-nav {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white !important;
+            padding: 8px 18px;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 20px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span { color: var(--primary); text-shadow: 0 0 30px var(--primary-glow); }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .hero-btns { display: flex; justify-content: center; gap: 15px; }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .btn-primary { background: var(--primary); color: #0b0f19; box-shadow: 0 0 20px var(--primary-glow); }
+        .btn-primary:hover { background: #7dd3fc; transform: translateY(-2px); }
+
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+
+        /* Features Grid */
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 { font-size: 20px; margin-bottom: 10px; color: var(--text-main); }
+        .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        /* Gallery Section */
+        .gallery {
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            font-weight: 700;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gallery-caption {
+            padding: 20px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        /* License Form Section */
+        .license-section {
+            max-width: 700px;
+            margin: 100px auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        .license-section h2 { text-align: center; margin-bottom: 10px; }
+        .license-section p { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+            transition: 0.3s;
+        }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 80px;
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>نام نرم‌افزار شما</h1>
-        <p>توضیح کوتاه و جذاب درباره اینکه نرم‌افزار شما چه کاری انجام می‌دهد و چه مشکلی را حل می‌کند.</p>
-        
-        <br>
-        <a href="#" class="btn">📥 دانلود نرم‌افزار</a>
-        <a href="#" class="btn btn-green">🔑 خرید لایسنس / ارتباط با ما</a>
 
-        <br><br>
-        <p style="font-size: 13px; color: #94a3b8;">طراحی شده برای مهندسین و متخصصان</p>
-    </div>
+    <!-- Header -->
+    <header>
+        <div class="logo">⚡ IEC101-Master</div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#license" class="btn-nav">Get License</a></li>
+        </ul>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="badge">v2.4 Enterprise Edition</div>
+        <h1>IEC 60870-5-101 Gateway & <span>Commissioning Suite</span></h1>
+        <p>Professional substation testing, point database mapping, packet tracer analysis, and automated PDF/DOC commissioning reports designed for modern power system engineers.</p>
+        <div class="hero-btns">
+            <a href="#license" class="btn btn-primary">Request License Key</a>
+            <a href="#gallery" class="btn btn-secondary">Explore Features</a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Point Database & Addressing</h3>
+            <p>Define IOAs, ASDU types (Normalized, Scaled, Short Float, Double-point), and map substations instantly.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📑</div>
+            <h3>Instant PDF & DOC Reports</h3>
+            <p>Generate professional commissioning and test verification reports ready to submit to regional electric clients.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📡</div>
+            <h3>Built-in Packet Tracer</h3>
+            <p>Real-time monitoring of TX/RX frames, ASDU verification, timeout tracking, and protocol error debugging.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⚙️</div>
+            <h3>Project & Session Management</h3>
+            <p>Easily create new projects, load sample substations, and save complete network configurations.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2 class="section-title">Software Interface & Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="image.webp" alt="Commissioning Report">
+                <div class="gallery-caption">📄 Automated Commissioning Report</div>
+            </div>
+            <div class="gallery-item">
+                <img src="image-(2).webp" alt="Single Line Diagram SLD">
+                <div class="gallery-caption">⚡ Single Line Diagram (SLD) Builder</div>
+            </div>
+            <div class="gallery-item">
+                <img src="image-(3).webp" alt="Station Overview Dashboard">
+                <div class="gallery-caption">📈 Station Overview & Live Gauges</div>
+            </div>
+            <div class="gallery-item">
+                <img src="image-(4).webp" alt="License Activation Dialog">
+                <div class="gallery-caption">🔑 Node-Locked License Activation</div>
+            </div>
+            <div class="gallery-item">
+                <img src="image-(5).webp" alt="Project Configuration">
+                <div class="gallery-caption">⚙️ Point Database & Addressing</div>
+            </div>
+            <div class="gallery-item">
+                <img src="image-(6).webp" alt="Grid Configuration">
+                <div class="gallery-caption">🔧 Substation Bay Setup</div>
+            </div>
+            <div class="gallery-item">
+                <img src="image-(7).webp" alt="Live Monitor">
+                <div class="gallery-caption">💻 Real-time Point Database Monitor</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- License Request Section -->
+    <section id="license" class="license-section">
+        <h2>Request Software License</h2>
+        <p>Please enter your details and Machine ID to receive your commercial activation key.</p>
+        
+        <form onsubmit="event.preventDefault(); alert('License request submitted successfully! We will contact you shortly.');">
+            <div class="form-group">
+                <label>Full Name / Company</label>
+                <input type="text" class="form-control" placeholder="e.g. Regional Electric Co." required>
+            </div>
+            <div class="form-group">
+                <label>Work Email</label>
+                <input type="email" class="form-control" placeholder="engineer@substation.com" required>
+            </div>
+            <div class="form-group">
+                <label>Machine ID (from software activation screen)</label>
+                <input type="text" class="form-control" placeholder="e.g. 3F0D-705B-6DCF" required>
+            </div>
+            <button type="submit" class="btn-submit">Submit License Request</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 IEC 60870-5-101 Suite. All rights reserved. Designed for Power System Specialists.</p>
+    </footer>
+
 </body>
 </html>
